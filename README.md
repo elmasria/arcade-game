@@ -2,7 +2,7 @@
 
 Classic Arcade Game Clone
 
-## installation
+## Installation
 
 **1.** Clone Repository
 ```
