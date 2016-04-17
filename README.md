@@ -8,6 +8,10 @@ Classic Arcade Game Clone
 ```
 $ git clone https://github.com/elmasria/arcade-game.git
 ```
+**2.** Navigate to project folder
+```
+$ cd arcade-game/
+```
 
 **2.** Install npm
 
