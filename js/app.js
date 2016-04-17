@@ -13,19 +13,33 @@ var constants = {
 	ENEMY_Y_POSITION: [225, 140, 60]
 };
 
+var MovableObject =  function(sprite,xPosition, yPosition){
+	this.sprite = sprite;
+	this.x = xPosition;
+	this.y = yPosition;
+};
+
+
+MovableObject.prototype.generateRandomNumber = function(a, b) {
+	// Generate Random Number
+	return Math.floor((Math.random() + a)*b);
+}
+
 // Enemies our player must avoid
 var Enemy = function() {
-	this.sprite = 'images/enemy-bug.png';
-	this.x = generateRandomNumber(100, -10);
-	this.y = constants.ENEMY_Y_POSITION[generateRandomNumber(0, 3)];
-	this.speed = generateRandomNumber(1, 150);
+	MovableObject.call(this,'images/enemy-bug.png', this.generateRandomNumber(100, -10), constants.ENEMY_Y_POSITION[this.generateRandomNumber(0, 3)]);
+	this.speed = this.generateRandomNumber(1, 150);
 };
+
+Enemy.prototype = Object.create(MovableObject.prototype);
+
+Enemy.prototype.constructor = Enemy;
 
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
 	this.x = this.x + this.speed * dt
 	if(this.x > constants.MAX_Y_BORDER) {
-		this.x = generateRandomNumber(100, -10);
+		this.x = this.generateRandomNumber(100, -10);
 	}
 };
 
@@ -48,12 +62,14 @@ Enemies.prototype.generateEnemies = function() {
 
 // Our player class
 var Player = function() {
-	this.sprite = 'images/char-boy.png';
-	this.x = constants.PLAYER_START_POINT[0];
-	this.y = constants.PLAYER_START_POINT[1];
+	MovableObject.call(this, 'images/char-boy.png', constants.PLAYER_START_POINT[0], constants.PLAYER_START_POINT[1])
 	this.score = 0;
 	this.lives = constants.STARTINGLIVES;
 };
+
+Player.prototype = Object.create(MovableObject.prototype);
+
+Player.constructor = Player;
 
 Player.prototype.update = function() {
 	this.xNow = this.x;
@@ -149,8 +165,3 @@ document.addEventListener('keyup', function(e) {
 
 	player.handleInput(allowedKeys[e.keyCode]);
 });
-
-function generateRandomNumber(a, b) {
-	// Generate Random Number
-	return Math.floor((Math.random() + a)*b);
-}
